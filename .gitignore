@@ -1,0 +1,14 @@
+# Startstand: alles sperren, nur freigeben, was ins Netz soll.
+# Neue Dateien oder Ordner auf oberster Ebene hier eintragen.
+# Nie freigeben: firebase/ (Regeln), tools/, Specs, PDFs, Codes.
+/*
+!/.gitignore
+!/index.html
+!/impressum.html
+!/datenschutz.html
+!/manifest.webmanifest
+!/README.md
+!/css/
+!/js/
+!/bilder/
+!/schriften/

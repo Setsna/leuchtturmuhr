@@ -1,0 +1,221 @@
+/* Leuchtturmuhr: Stile für die Stationen. Generische Teile übernommen aus der Chancenbucht (css/station.css, v=28):
+   Kopf, Fläche, Bühne, Antworten, Stufenwahl, Rundenende, Dialoge, Logbuch (hier: Leuchtfeuerbuch).
+   Gleiche Regeln: nur opacity und transform animieren, Touchziele 48 px, Unterschiede nie nur über Farbe. */
+/* ---------- Kopf der Station ---------- */
+.kopf--station { max-width: 68rem; margin-bottom: var(--a-m); }
+.kopf--station::before { inset: -1.5rem -2rem; }
+.kopf__reihe { display: flex; align-items: center; justify-content: space-between; gap: var(--a-m); }
+.kopf__mitte { flex: 1; min-width: min-content; }   /* nie schmaler als das längste Titelwort (200 % Text) */
+.kopf--station h1 { font-size: var(--gr-title); }
+.kopf__werkzeug { display: flex; gap: var(--a-s); flex-wrap: wrap; justify-content: flex-end; }
+.pfeil-knopf {
+  flex: none; width: max(48px, calc(84 * var(--s))); height: max(48px, calc(84 * var(--s)));
+  border-radius: 50%; border: 0; background: var(--weiss); color: var(--navy); cursor: pointer;
+  box-shadow: 0 10px 22px -6px rgba(3, 20, 35, 0.5);
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: transform var(--dauer) var(--kurve);
+}
+.pfeil-knopf svg { width: 55%; height: 55%; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.pfeil-knopf:active { transform: scale(0.92); }
+.werkzeug-knopf { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0 var(--a-m); }
+.lumi-klein { width: 2rem; height: 2rem; border-radius: 50%; object-fit: cover; }
+.lumi-satz { max-width: 40rem; margin: 0 auto var(--a-m); padding: var(--a-s) var(--a-m); background: var(--papier); border-radius: var(--r-knopf); }
+@media (max-width: 560px) {
+  .kopf__reihe { flex-wrap: wrap; }
+  .kopf__werkzeug { width: 100%; justify-content: center; }
+}
+
+/* ---------- Fläche: Uhr groß, Aufgabe daneben (quer) oder darunter (hoch) ---------- */
+.station-flaeche { display: grid; gap: var(--a-l); align-items: start; max-width: 68rem; margin: 0 auto; }
+@media (orientation: landscape) and (min-width: 820px) {
+  .station-flaeche { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); }
+  /* Die Bühne bleibt beim Scrollen der rechten Spalte stehen */
+  .station-flaeche > .buehne { position: sticky; top: var(--a-m); }
+}
+.buehne {
+  position: relative; display: grid; gap: var(--a-m); justify-items: center; padding: var(--a-m);
+  border-radius: calc(48 * var(--s)); background: rgba(10, 52, 84, 0.62); border: 2px solid var(--glas-kante);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+}
+.aufgabe { margin: 0; max-width: none; }
+.auftrag { margin: 0 0 0.2rem; color: var(--navy); font-size: var(--gr-text); }   /* Arbeitsauftrag in Lesegröße (6c) */
+.lumi-aussage { display: flex; align-items: center; gap: var(--a-s); }   /* Lumis Satz mit seinem Bild statt grauer Überzeile (6c) */
+.lumi-aussage .lumi-klein { flex: none; width: 3.25rem; height: 3.25rem; }
+.lumi-aussage > div { min-width: 0; }
+.aussage { font-size: var(--gr-text); font-weight: 700; margin: var(--a-xs) 0 var(--a-m); }
+.frage-klein { font-family: var(--schrift-text); font-weight: 700; font-size: var(--gr-label); margin: var(--a-m) 0 var(--a-s); }
+
+/* ---------- Antworten ---------- */
+.skala, .begruendungen, .antworten, .farb-knoepfe { display: grid; gap: var(--a-s); }
+.antworten--reihe { grid-template-columns: repeat(3, 1fr); }
+.skala-knopf, .begr-knopf, .antwort-knopf { text-align: left; padding: var(--a-s) var(--a-m); line-height: 1.25; }
+.knopf.ist-richtig, .knopf.ist-richtig[disabled] { background: var(--navy); color: var(--weiss); opacity: 1; }
+.ist-richtig::after { content: ''; display: inline-block; width: 0.36em; height: 0.72em; margin-left: 0.55em; border-right: 0.18em solid currentColor; border-bottom: 0.18em solid currentColor; transform: translateY(-0.1em) rotate(45deg); }   /* gezeichneter Haken (6c) */
+.rueckmeldung { min-height: 1.4em; font-weight: 700; margin: var(--a-m) 0 0; }
+.rueckmeldung:empty { min-height: 0; margin: 0; }
+.erklaerung { margin: var(--a-s) 0 0; }
+
+/* ---------- Stufenwahl, So geht's, Am Tisch, Rundenende ---------- */
+.stufen-liste { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--a-s); }
+.stufe-knopf { width: 100%; display: flex; flex-direction: column; align-items: flex-start; gap: 0.15rem; padding: var(--a-s) var(--a-m); text-align: left; }
+.stufe-knopf__name { font-family: var(--schrift-name); font-weight: 400; font-size: var(--gr-text); }
+.stufe-knopf__info { font-weight: 400; font-size: var(--gr-klein); display: inline-flex; align-items: center; gap: 0.4rem; }
+.stufe-knopf .stempel-punkt { border-color: var(--navy); }
+.stufe-knopf .stempel-punkt--voll { background: var(--navy); box-shadow: none; }
+.stufe-knopf--empfohlen { border-width: 3px; }
+.so-gehts ol, .am-tisch ol { padding-left: 1.4em; }
+.so-gehts summary h2, .am-tisch summary h2 { display: inline; margin: 0; font-size: var(--gr-text); }
+.so-gehts summary, .am-tisch summary { cursor: pointer; min-height: var(--tippen); display: flex; align-items: center; }
+.rundenende { text-align: center; }
+.rundenende__text { font-size: var(--gr-text); }
+.stempel-gross { width: 8rem; height: 8rem; margin: var(--a-s) auto; opacity: 0.35; }
+.stempel-gross--voll { opacity: 1; }
+.stempel-gross--neu { animation: stempel-leuchten 900ms var(--kurve); }
+@keyframes stempel-leuchten { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: none; } }
+.stempel-bild { width: 100%; height: 100%; }
+.stempel__rand { fill: none; stroke: var(--welle); stroke-width: 4; }
+.stempel__rand--innen { stroke-width: 2; stroke-dasharray: 4 4; }
+.stempel__welle { fill: none; stroke: var(--navy); stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
+.stempel__kugel { fill: var(--navy); }
+
+/* ---------- Dialog (Hilfe, Wörter) ---------- */
+.dialog { max-width: min(34rem, calc(100vw - 2rem)); border: 0; border-radius: var(--r-papier); padding: var(--a-l); background: var(--papier); color: var(--navy); box-shadow: 0 26px 50px -10px rgba(3, 20, 35, 0.5); }
+.dialog::backdrop { background: rgba(6, 30, 48, 0.6); }
+.dialog h2 { margin-top: 0; font-size: var(--gr-title); }
+.tipp { display: flex; gap: var(--a-m); align-items: flex-start; }
+.tipp .lumi-klein { width: 4rem; height: 4rem; }
+.tipp-liste { margin: 0; padding-left: 1.2em; }
+.tipp-liste li + li { margin-top: var(--a-s); }
+.wortspeicher__tabelle { border-collapse: collapse; width: 100%; }
+.wortspeicher__tabelle th, .wortspeicher__tabelle td { text-align: left; padding: var(--a-s) var(--a-m); border-bottom: 1px solid var(--papier-linie); }
+.wortspeicher__tabelle th { white-space: nowrap; }
+
+/* ---------- Logbuch (js/logbuch.js) ---------- */
+.logbuch { max-width: 52rem; margin-left: auto; margin-right: auto; }
+.logbuch + .logbuch { margin-top: var(--a-l); }
+.logbuch__tafel { list-style: none; margin: 0; padding: 0; }
+.logbuch__zeile { display: grid; grid-template-columns: minmax(8rem, 1fr) auto auto; gap: var(--a-m); align-items: center; padding: var(--a-s) 0; border-bottom: 1px solid var(--papier-linie); }
+.logbuch__zeile:last-child { border-bottom: 0; }
+.logbuch__station { margin: 0; font-size: var(--gr-text); }
+.logbuch__stempel { list-style: none; margin: 0; padding: 0; display: flex; gap: var(--a-s); }
+.logbuch__stufe { width: 4.5rem; display: flex; flex-direction: column; align-items: center; gap: 0.15rem; font-size: var(--gr-klein); text-align: center; }
+.logbuch__bild { width: 3.6rem; height: 3.6rem; border-radius: 50%; border: 2px dashed var(--tinte-leise); display: block; }
+.logbuch__stufe--voll .logbuch__bild { border: 0; }
+.logbuch__wort { font-weight: 700; }
+.logbuch__offen { color: var(--tinte-leise); font-size: 0.85em; }
+.logbuch__kann { list-style: none; margin: 0; padding: 0; }
+.logbuch__kann h3 { margin: var(--a-m) 0 var(--a-xs); font-size: var(--gr-label); }
+.logbuch__kann ul { margin: 0; padding-left: 1.2em; }
+.logbuch__kann ul li + li { margin-top: var(--a-xs); }
+@media (max-width: 640px) {
+  .logbuch__zeile { grid-template-columns: 1fr; justify-items: start; }
+}
+.logbuch-knopf { display: inline-flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; justify-content: center; }
+.logbuch-knopf .buch { width: 1.5rem; height: 1.5rem; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linejoin: round; }
+.logbuch-knopf__zahl { font-weight: 400; font-size: var(--gr-klein); opacity: 0.9; }
+
+/* A8: „Lösung gezeigt“ ist ein eigener, ruhiger Zustand (Umriss gestrichelt, ohne Haken), nicht wie „richtig gelöst“ */
+.loesung-gezeigt .knopf.ist-richtig, .loesung-gezeigt .knopf.ist-richtig[disabled] { background: var(--weiss); color: var(--navy); border: 2px dashed var(--navy); opacity: 1; }
+.loesung-gezeigt .ist-richtig::after { content: none; }
+/* A12: Stationstitel genau in der Mitte (Pfeil links und Werkzeuge rechts nehmen gleich viel Platz).
+   Nur, wenn Titel und beide Werkzeuge wirklich nebeneinander passen: Container-Abfrage in rem, wächst also mit der
+   Schrift (Tafelstufe, 200 % Text). Darunter bleibt der Kopf wie vorher (Titel zwischen Pfeil und Werkzeugen). */
+.kopf--station { container: kopf / inline-size; }
+@container kopf (min-width: 50rem) {
+  .kopf__reihe { display: grid; grid-template-columns: minmax(max-content, 1fr) minmax(0, auto) minmax(max-content, 1fr); }
+  .kopf__reihe > .pfeil-knopf { justify-self: start; }
+  .kopf__werkzeug { justify-self: end; flex-wrap: nowrap; }
+}
+.logbuch__offen { font-size: 0.95rem; }
+.logbuch__stufe { width: 5rem; }
+/* B13: Rundenende als Höhepunkt: Glasfeld, großer Stempel auf Papier, Lumi daneben, ein Hauptknopf, die anderen kleiner */
+.rundenende {
+  max-width: 34rem; margin: var(--a-l) auto; padding: var(--a-l) var(--a-l) var(--a-m); text-align: center; color: var(--weiss);
+  border-radius: calc(56 * var(--s) + 1rem); background: rgba(10, 52, 84, 0.78); border: 2px solid var(--glas-kante);
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.5), 0 26px 50px -10px rgba(3, 20, 35, 0.4);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+}
+.rundenende .stempel-gross {
+  width: clamp(9rem, 30vw, 12rem); height: clamp(9rem, 30vw, 12rem); padding: 0.5rem; margin: 0 auto var(--a-m);
+  background: var(--papier); border-radius: 50%; box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.35), 0 14px 30px -10px rgba(3, 20, 35, 0.5);
+}
+.rundenende .stempel-gross:not(.stempel-gross--voll) { opacity: 0.55; }
+.rundenende__satz { display: flex; align-items: center; justify-content: center; gap: var(--a-m); text-align: left; max-width: 28rem; margin: 0 auto; }
+.rundenende__satz .lumi-klein { width: 3.5rem; height: 3.5rem; flex: none; box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.6); }
+.rundenende__text { margin: 0; font-size: var(--gr-text); line-height: 1.3; }
+.rundenende .knopfreihe { margin-top: var(--a-m); }
+.rundenende__haupt { min-height: max(56px, calc(64 * var(--s))); padding: 0 var(--a-xl, 2rem); font-size: var(--gr-text); background: var(--weiss); color: var(--navy); border-color: var(--weiss); }
+.knopf--klein { font-size: var(--gr-klein); font-weight: 400; padding: 0 var(--a-m); }
+.rundenende .knopf--klein { background: transparent; color: var(--weiss); border-color: rgba(255, 255, 255, 0.6); }
+/* ---------- Etappe 6c (Finish-Review) ---------- */
+.zusammen { white-space: nowrap; }
+
+/* ---------- Leuchtturmuhr: eigene Teile ---------- */
+.lumi-satz { display: flex; align-items: center; gap: var(--a-m); }
+.lumi-satz .lumi-klein, .lumi-aussage .lumi-klein { flex: none; width: 3.25rem; height: 3.25rem; }
+.lumi-satz p { margin: 0; }
+.lumi-aussage { display: flex; align-items: center; gap: var(--a-s); margin-bottom: var(--a-s); }
+.lumi-aussage .aussage { margin: 0; }
+.antworten--zwei { grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr)); }
+.antwort-knopf { min-height: max(var(--tippen), 3.25rem); }
+.antwort-knopf[aria-pressed="true"]:not(.ist-richtig) { text-decoration: line-through; opacity: 0.7; }
+.verlauf { margin: 0 0 var(--a-s); padding: var(--a-xs) var(--a-s); background: rgba(11, 49, 85, 0.06); border-radius: 0.5rem; color: var(--tinte-leise); }
+.station__bild.sym { width: max(3rem, calc(84 * var(--s))); height: auto; margin-top: var(--a-xs); }
+.sym .stempel__welle { fill: none; stroke: rgba(255, 255, 255, 0.92); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+.sym .stempel__kugel { fill: rgba(255, 255, 255, 0.92); }
+
+/* Bühne: Uhren, Tageszeit, Satz, Fahrplan, Zeitstrahl */
+.buehne-teil { margin: 0; width: 100%; display: flex; flex-direction: column; align-items: center; }
+.buehne-teil figcaption { color: var(--weiss); font-size: var(--gr-klein); font-weight: 700; margin-top: var(--a-xs); }
+.uhren-reihe { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr)); gap: var(--a-m); width: 100%; }
+.buehne-teil--tageszeit { flex-direction: row; justify-content: center; gap: var(--a-s); }
+.tageszeit { width: 4.5rem; height: auto; }
+.tageszeit .tz-sonne { fill: #f2c46d; stroke: #fff; stroke-width: 1.5; }
+.tageszeit .tz-mond { fill: #f3ecdc; stroke: #fff; stroke-width: 1.5; }
+.tageszeit .tz-stern { fill: #f3ecdc; }
+.tageszeit .tz-strahl { stroke: #f2c46d; stroke-width: 3; stroke-linecap: round; fill: none; }
+.tageszeit .tz-meer { stroke: rgba(255, 255, 255, 0.85); stroke-width: 3; stroke-linecap: round; fill: none; }
+.tageszeit__wort { font-size: var(--gr-text) !important; }
+.buehne-satz { margin: 0; padding: var(--a-s) var(--a-m); background: var(--papier); color: var(--navy); border-radius: var(--r-knopf); font-size: var(--gr-title); font-family: var(--schrift-text); font-weight: 700; text-align: center; font-variant-numeric: tabular-nums; }
+.fahrplan { border-collapse: separate; border-spacing: 0; background: var(--papier); color: var(--navy); border-radius: 0.8rem; overflow: hidden; font-variant-numeric: tabular-nums; width: 100%; max-width: 30rem; }
+.fahrplan caption { color: var(--weiss); font-weight: 700; padding-bottom: var(--a-xs); caption-side: top; }
+.fahrplan th, .fahrplan td { padding: 0.45rem 0.7rem; text-align: center; border-bottom: 1px solid var(--papier-linie); }
+.fahrplan thead th { font-size: var(--gr-klein); background: rgba(11, 49, 85, 0.08); }
+.fahrplan tbody tr:last-child > * { border-bottom: 0; }
+.fahrplan__hervor > * { background: rgba(45, 111, 152, 0.18); font-weight: 700; }
+
+.zeitstrahl { width: 100%; background: var(--papier); border-radius: var(--r-papier); padding: var(--a-s); }
+.zeitstrahl__svg { width: 100%; height: auto; display: block; }
+.zeitstrahl__linie { stroke: var(--navy); stroke-width: 3; }
+.zeitstrahl__pfeil { fill: var(--navy); }
+.zeitstrahl__strich { stroke: var(--navy); stroke-width: 3; }
+.zeitstrahl__zeit { font-family: var(--schrift-text); font-size: 17px; fill: var(--navy); }
+.zeitstrahl__zeit--rand { font-weight: 700; }
+.zeitstrahl__bogen { fill: none; stroke: var(--zeiger-minute); stroke-width: 3; }
+.zeitstrahl__spitze { fill: var(--zeiger-minute); }
+.zeitstrahl__dauer { font-family: var(--schrift-text); font-size: 17px; font-weight: 700; fill: var(--zeitstrahl-dauer); }
+.zeitstrahl__text { margin: var(--a-xs) 0 0; color: var(--navy); font-size: var(--gr-klein); }
+
+/* Ziffernblock: eigene Knöpfe statt Bildschirmtastatur (die würde die Uhr verdecken) */
+.ziffern { display: grid; gap: var(--a-s); margin-bottom: var(--a-s); }
+.ziffern-zeile { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem; }
+.ziffern-zeile__titel { flex-basis: 100%; font-weight: 700; font-size: var(--gr-label); }
+.ziffern-text { font-size: var(--gr-title); font-weight: 700; }
+.ziffern-feld {
+  font: inherit; font-size: var(--gr-title); font-weight: 700; font-variant-numeric: tabular-nums;
+  min-width: 3.6rem; min-height: var(--tippen); padding: 0 0.4rem; border-radius: 0.6rem; cursor: pointer;
+  border: 2px solid var(--navy-weich); background: var(--weiss); color: var(--navy);
+}
+.ziffern-feld--aktiv { border-width: 3px; border-color: var(--navy); box-shadow: 0 0 0 3px rgba(45, 111, 152, 0.35); }
+.ziffern-feld__leer { color: var(--tinte-leise); letter-spacing: 0.1em; }
+.ziffernblock { display: grid; grid-template-columns: repeat(3, minmax(var(--tippen), 4.5rem)); gap: 0.4rem; }
+.ziffer { padding: 0; font-size: var(--gr-text); font-variant-numeric: tabular-nums; }
+.stufe-knopf__was { font-weight: 400; font-size: var(--gr-klein); }
+@media (orientation: landscape) and (min-width: 820px) {
+  .station-flaeche--fahrplan, .station-flaeche--dauer { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); }
+}
+
+/* Gemaltes Stationsbild auf der Karte: rund ausgeblendet, unten in der Karte (Lernlagune: Bild unten, Wasser oben) */
+.station__foto { display: block; width: max(5.5rem, calc(150 * var(--s))); aspect-ratio: 1; margin-top: auto; padding-top: var(--a-s); }
+.station__foto img { width: 100%; height: 100%; display: block; border-radius: 50%; object-fit: cover;
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 58%, transparent 71%); mask-image: radial-gradient(circle at 50% 50%, #000 58%, transparent 71%); }
