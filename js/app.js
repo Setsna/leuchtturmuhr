@@ -253,10 +253,11 @@
   });
 
   /* ---------- Start ---------- */
-  /* Licht und Blasen ruhen, sobald sie aus dem Bild sind (Lernlagune DESIGN.md: „Außer Sicht“) */
-  const blasen = document.querySelector('.blasen');
-  if (blasen && 'IntersectionObserver' in window) {
-    new IntersectionObserver(e => document.body.classList.toggle('ruht', !e[0].isIntersecting)).observe(blasen);
+  /* Das Licht ruht, sobald es aus dem Bild ist (Lernlagune DESIGN.md: „Außer Sicht“).
+     Keine Blasen: Die Leuchtturmuhr liegt über Wasser (Ingo, 16.11.2026). */
+  const licht = document.querySelector('.licht');
+  if (licht && 'IntersectionObserver' in window) {
+    new IntersectionObserver(e => document.body.classList.toggle('ruht', !e[0].isIntersecting)).observe(licht);
   }
 
   if (ST.istVorschau) {
