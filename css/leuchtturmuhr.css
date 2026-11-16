@@ -168,8 +168,8 @@ a.knopf { display: inline-flex; align-items: center; text-decoration: none; }
 /* „Kommt bald“: dunkleres Nebelglas, damit kleine weiße Schrift auch über hellem Wasser AA erreicht */
 .station--bald { background: var(--nebel); }
 .station__name { display: block; margin: 0; font-family: var(--schrift-name); font-weight: 400; font-size: max(1.375rem, calc(40 * var(--s)));
-  font-size: clamp(min(1.25rem, 17cqi), 17cqi, 2.5rem);   /* richtet sich nach der Kartenbreite (Container), ältere Browser nehmen die Zeile davor */
-  max-width: 100%; hyphens: auto; overflow-wrap: anywhere; line-height: 1.3; text-shadow: 0 1px 3px rgba(4, 30, 50, 0.55); }
+  font-size: clamp(min(1.25rem, 15.5cqi), 15.5cqi, 2.5rem);   /* richtet sich nach der Kartenbreite (Container), ältere Browser nehmen die Zeile davor; 15,5 statt 17, damit „Zeitspannen“ auf dem iPad in eine Zeile passt (Ingo, 16.11.2026) */
+  max-width: 100%; hyphens: manual; overflow-wrap: anywhere; line-height: 1.3; text-shadow: 0 1px 3px rgba(4, 30, 50, 0.55); }
 .station__kurz { display: block; font-size: var(--gr-klein); line-height: 1.3; }
 /* Live-Station: ganzes Fenster ist der Knopf. Getöntes Glas (0.62 oben), damit kleine weiße Schrift AA erreicht. */
 .station--live {
